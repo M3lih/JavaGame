@@ -2,6 +2,7 @@ package com.javaproject.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.javaproject.game.states.GameStateManager;
@@ -15,11 +16,17 @@ public class Game extends ApplicationAdapter {
 	private GameStateManager gsm;
 	private SpriteBatch batch;
 
+	private Music music;
+
 	@Override
 	public void create() {
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch = new SpriteBatch();
 		gsm = new GameStateManager();
+		music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+		music.setLooping(true);
+		music.setVolume(0.1f);
+		music.play();
 		gsm.push(new MenuState(gsm));
 	}
 
@@ -27,6 +34,12 @@ public class Game extends ApplicationAdapter {
 	public void render() {
 		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.render(batch);
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		music.dispose();
 	}
 
 
